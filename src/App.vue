@@ -50,7 +50,7 @@
                 background: backgrounds[index % backgrounds.length] || defaultBackground
               }
             })
-            this.setDisplayedQuotes(this.allQuotes.slice(0, 3))
+            this.setDisplayedQuotes(getRandomizedArray(this.allQuotes.slice(0, 3)))
           })
         })
       },

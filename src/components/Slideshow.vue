@@ -13,6 +13,10 @@
 </template>
 
 <script>
+import ImagePreloader from 'image-preloader'
+
+let preloader = new ImagePreloader()
+
 export default {
   name: 'slideshow',
   data () {
@@ -25,22 +29,31 @@ export default {
   watch: {
     quotes: function (newQuotes) {
       if (newQuotes && newQuotes.length) {
-        this.index = 0
-        this.renderQuote()
+        this.selectQuote(0)// Select first quote
+        if (newQuotes.length > 1) this.preloadBackground(1) // Preload next quote's background
+        if (newQuotes.length > 2) this.preloadBackground(this.quotes.length - 1) // Preload previous quote's background
       }
     }
   },
   methods: {
     nextSlide: function () {
-      this.index = (this.index + 1) % this.quotes.length
-      this.renderQuote()
+      let nextIndex = (this.index + 1) % this.quotes.length
+      let secondNextIndex = (nextIndex + 1) % this.quotes.length
+      this.selectQuote(nextIndex)
+      this.preloadBackground(secondNextIndex)
     },
     previousSlide: function () {
-      this.index = (this.index || this.quotes.length) - 1
-      this.renderQuote()
+      let previousIndex = (this.index || this.quotes.length) - 1
+      let secondPreviousIndex = (previousIndex || this.quotes.length) - 1
+      this.selectQuote(previousIndex)
+      this.preloadBackground(secondPreviousIndex)
     },
-    renderQuote: function () {
-      this.quote = this.quotes[this.index]
+    selectQuote: function (index) {
+      this.index = index
+      this.quote = this.quotes[index]
+    },
+    preloadBackground: function (index) {
+      preloader.preload(this.quotes[index].background)
     }
   }
 }
