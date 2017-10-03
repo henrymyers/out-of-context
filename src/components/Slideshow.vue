@@ -1,5 +1,5 @@
 <template>
-  <div v-if="quote" class="slideshow" v-bind:style="{backgroundImage: `url(${quote.background})`}">
+  <div v-if="quote" class="slideshow" v-bind:style="{backgroundImage: `url(${background})`}">
     <div class="quote">
       <h3 class="quote-text">{{quote.text}}</h3>
       <h3 class="quote-author">{{quote.author}}</h3>
@@ -16,6 +16,7 @@
 import ImagePreloader from 'image-preloader'
 
 let preloader = new ImagePreloader()
+let defaultBackground = './assets/default-bg.jpg'
 
 export default {
   name: 'slideshow',
@@ -25,7 +26,7 @@ export default {
       index: 0
     }
   },
-  props: ['quotes'],
+  props: ['quotes', 'backgrounds'],
   watch: {
     quotes: function (newQuotes) {
       // Every time the list of quotes changes, select the first one
@@ -52,9 +53,13 @@ export default {
     selectQuote: function (index) {
       this.index = index
       this.quote = this.quotes[index]
+      this.background = this.getBackgroundFromIndex(index)
+    },
+    getBackgroundFromIndex: function (index) {
+      return this.backgrounds[index % this.backgrounds.length] || defaultBackground
     },
     preloadBackground: function (index) {
-      preloader.preload(this.quotes[index].background)
+      preloader.preload(this.getBackgroundFromIndex(index))
     },
     onKeyUp: function (event) {
       let key = event.which || event.keyCode

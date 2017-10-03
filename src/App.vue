@@ -1,5 +1,5 @@
 <template>
-  <slideshow :quotes="displayedQuotes"></slideshow>
+  <slideshow :quotes="displayedQuotes" :backgrounds="backgrounds"></slideshow>
 </template>
 
 <script>
@@ -23,6 +23,7 @@
       return {
         loading: true,
         errors: [],
+        backgrounds: [],
         allQuotes: [],
         displayedQuotes: []
       }
@@ -35,27 +36,24 @@
     created () {
       let quotesApi = 'https://spreadsheets.google.com/feeds/list/1-wxLMgOX_jNayPD7u_w07gkuLnVZ1TJxvg9Je9yQj98/1/public/values?alt=json'
       let backgroundsApi = 'https://spreadsheets.google.com/feeds/list/1IlMhfGYrm9qWMeLEZ5hGnicD3ugaoJTM3u_zfNJEybI/1/public/values?alt=json'
-      let defaultBackground = './assets/default-bg.jpg'
 
       getJSON(backgroundsApi, (error, response) => {
         if (error) this.errors.push(error)
 
         let backgrounds = (response && response.feed && response.feed.entry) || []
-        backgrounds = _.map(backgrounds, 'gsx$imageurl.$t')
-        backgrounds = getRandomizedArray(backgrounds)
+        this.backgrounds = getRandomizedArray(_.map(backgrounds, 'gsx$imageurl.$t'))
 
         getJSON(quotesApi, (error, response) => {
           if (error) this.errors.push(error)
 
           let quotes = (response && response.feed && response.feed.entry) || []
           console.log('>>>> quotes = ', quotes)
-          this.allQuotes = _.map(quotes, (quote, index) => {
+          this.allQuotes = _.map(quotes, (quote) => {
             return {
               text: quote.gsx$quote && quote.gsx$quote.$t,
               author: quote.gsx$author && quote.gsx$author.$t,
               context: quote.gsx$contextoptional && quote.gsx$contextoptional.$t,
-              exclude: !!(quote.gsx$excludefromslideshow && quote.gsx$excludefromslideshow.$t),
-              background: backgrounds[index % backgrounds.length] || defaultBackground
+              exclude: !!(quote.gsx$excludefromslideshow && quote.gsx$excludefromslideshow.$t)
             }
           })
           this.setDisplayedQuotes(getRandomizedArray(this.allQuotes).slice(0, 20))
