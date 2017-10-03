@@ -54,7 +54,24 @@ export default {
     },
     preloadBackground: function (index) {
       preloader.preload(this.quotes[index].background)
+    },
+    onKeyUp: function (event) {
+      let key = event.which || event.keyCode
+      switch (key) {
+        case 37:
+          this.previousSlide()
+          break
+        case 39:
+          this.nextSlide()
+          break
+      }
     }
+  },
+  created () {
+    window.addEventListener('keyup', this.onKeyUp)
+  },
+  beforeDestroy () {
+    window.removeEventListener('keyup', this.onKeyUp)
   }
 }
 </script>
