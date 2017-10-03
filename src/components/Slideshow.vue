@@ -28,8 +28,9 @@ export default {
   props: ['quotes'],
   watch: {
     quotes: function (newQuotes) {
+      // Every time the list of quotes changes, select the first one
       if (newQuotes && newQuotes.length) {
-        this.selectQuote(0)// Select first quote
+        this.selectQuote(0)
         if (newQuotes.length > 1) this.preloadBackground(1) // Preload next quote's background
         if (newQuotes.length > 2) this.preloadBackground(this.quotes.length - 1) // Preload previous quote's background
       }
