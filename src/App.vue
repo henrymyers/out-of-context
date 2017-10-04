@@ -71,8 +71,8 @@
             exclude: !!(quote.gsx$excludefromslideshow && quote.gsx$excludefromslideshow.$t)
           }
         })
-        this.allQuotes = quotes
-        this.setDisplayedQuotes(getRandomizedArray(this.allQuotes).slice(0, 20))
+        this.allQuotes = _.reverse(_.sortBy(quotes, 'timestamp'))
+        this.setDisplayedQuotes(this.allQuotes)
         this.loading = false
       })
     }
