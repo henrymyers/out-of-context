@@ -122,5 +122,9 @@ export default {
       background-color: rgba(150, 150, 150, 0.1);
       border-color: $colorPrimary;
     }
+
+    button:disabled {
+      opacity: 0.5;
+    }
   }
 </style>

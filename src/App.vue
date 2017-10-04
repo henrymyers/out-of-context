@@ -1,10 +1,12 @@
 <template>
   <div class="app" v-bind:style="{backgroundImage: `url(${displayedBackground})`}">
-    <!--loader-->
+
+    <div v-if="loading" class="loader"></div>
+
     <slideshow
       :quotes="displayedQuotes"
       :backgrounds="backgrounds"
-      v-show="!showFilters"
+      v-show="!loading && !showFilters"
       v-on:toggle-filters="showFilters = !showFilters"
       v-on:background-changed="setDisplayedBackground"></slideshow>
 
@@ -71,6 +73,7 @@
         })
         this.allQuotes = quotes
         this.setDisplayedQuotes(getRandomizedArray(this.allQuotes).slice(0, 20))
+        this.loading = false
       })
     }
   }
