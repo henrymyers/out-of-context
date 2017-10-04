@@ -1,14 +1,14 @@
 <template>
   <div class="app">
     <!--loader-->
-    <slideshow :quotes="displayedQuotes" :backgrounds="backgrounds"></slideshow>
-    <!--filter-->
-
+    <slideshow :quotes="displayedQuotes" :backgrounds="backgrounds" v-on:filter="showFilters = !showFilters"></slideshow>
+    <filters v-if="showFilters" :quotes="allQuotes"></filters>
   </div>
 </template>
 
 <script>
   import Slideshow from './components/Slideshow.vue'
+  import Filters from './components/Filters.vue'
 
   let getJSON = require('get-json')
   let _ = require('lodash')
@@ -22,11 +22,12 @@
   }
 
   export default {
-    components: {Slideshow},
+    components: {Slideshow, Filters},
     name: 'app',
     data () {
       return {
         loading: true,
+        showFilters: false,
         errors: [],
         backgrounds: [],
         allQuotes: [],
