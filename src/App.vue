@@ -7,29 +7,22 @@
       v-show="!showFilters"
       v-on:toggle-filters="showFilters = !showFilters"
       v-on:background-changed="setDisplayedBackground"></slideshow>
-    <filters v-show="showFilters" :quotes="allQuotes"></filters>
+
+    <filters
+      v-show="showFilters"
+      :quotes="allQuotes"
+      v-on:hide-filters="showFilters = false"
+      v-on:filter-changed="setDisplayedQuotes"></filters>
   </div>
 </template>
 
 <script>
   import Slideshow from './components/Slideshow.vue'
   import Filters from './components/Filters.vue'
+  import getRandomizedArray from './utils/getRandomizedArray'
 
   let getJSON = require('get-json')
   let _ = require('lodash')
-
-  function getRandomizedArray (array = []) {
-    function randomize (arr) {
-      if (!arr.length) {
-        return []
-      }
-      let randomIndex = Math.floor(Math.random() * arr.length)
-      return arr.splice(randomIndex, 1).concat(randomize(arr))
-    }
-
-    let arrayCopy = Array.from(array)
-    return randomize(arrayCopy)
-  }
 
   export default {
     components: {Slideshow, Filters},
@@ -111,5 +104,9 @@
     background-repeat: no-repeat;
     background-position: center;
     transition: background-image 1s ease-in-out;
+  }
+
+  button {
+    margin-bottom: 0;
   }
 </style>

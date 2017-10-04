@@ -7,9 +7,9 @@
     </div>
 
     <div class=navbar>
-      <button v-on:click="previousSlide">Previous</button>
+      <button :disabled="quotes.length < 2" v-on:click="previousSlide">Previous</button>
       <button v-on:click="$emit('toggle-filters')">Filter</button>
-      <button v-on:click="nextSlide">Next</button>
+      <button :disabled="quotes.length < 2" v-on:click="nextSlide">Next</button>
     </div>
   </div>
 </template>
@@ -121,7 +121,6 @@ export default {
       text-shadow: 1px 2px 3px black;
       background-color: rgba(150, 150, 150, 0.1);
       border-color: $colorPrimary;
-      margin-bottom: 0;
     }
   }
 </style>
