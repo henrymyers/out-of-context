@@ -1,8 +1,14 @@
 <template>
   <div class="app">
     <!--loader-->
-    <slideshow :quotes="displayedQuotes" :backgrounds="backgrounds" v-on:filter="showFilters = !showFilters"></slideshow>
-    <filters v-if="showFilters" :quotes="allQuotes"></filters>
+    <div class="background" v-if="displayedBackground" v-bind:style="{backgroundImage: `url(${displayedBackground})`}"></div>
+    <slideshow
+      :quotes="displayedQuotes"
+      :backgrounds="backgrounds"
+      v-show="!showFilters"
+      v-on:toggle-filters="showFilters = !showFilters"
+      v-on:background-changed="setDisplayedBackground"></slideshow>
+    <filters v-show="showFilters" :quotes="allQuotes"></filters>
   </div>
 </template>
 
@@ -31,12 +37,16 @@
         errors: [],
         backgrounds: [],
         allQuotes: [],
+        displayedBackground: null,
         displayedQuotes: []
       }
     },
     methods: {
       setDisplayedQuotes: function (quotes) {
         this.displayedQuotes = quotes || this.allQuotes
+      },
+      setDisplayedBackground: function (background) {
+        this.displayedBackground = background
       }
     },
     created () {
@@ -53,12 +63,12 @@
           if (error) this.errors.push(error)
 
           let quotes = (response && response.feed && response.feed.entry) || []
-          console.log('>>>> quotes = ', quotes)
           this.allQuotes = _.map(quotes, (quote) => {
             return {
               text: quote.gsx$quote && quote.gsx$quote.$t,
               author: quote.gsx$author && quote.gsx$author.$t,
               context: quote.gsx$contextoptional && quote.gsx$contextoptional.$t,
+              timestamp: new Date(quote.gsx$timestamp && quote.gsx$timestamp.$t),
               exclude: !!(quote.gsx$excludefromslideshow && quote.gsx$excludefromslideshow.$t)
             }
           })
@@ -84,5 +94,15 @@
     height: 100%;
     width: 100%;
     background-color: #3e506d;
+  }
+
+  .background {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    transition: background-image 1s ease-in-out;
   }
 </style>

@@ -1,14 +1,14 @@
 <template>
   <div class="slideshow">
-    <div class="background" v-if="background" v-bind:style="{backgroundImage: `url(${background})`}"></div>
     <div class="quote" v-if="quote">
       <h3 class="quote-text">{{quote.text}}</h3>
       <h3 class="quote-author">{{quote.author}}</h3>
+      <!--<h5 class="quote-context" v-if="quote.context" v-bind:title="quote.context">?</h5>-->
     </div>
 
     <div class=navbar>
       <button v-on:click="previousSlide">Previous</button>
-      <button v-on:click="$emit('filter')">Filter</button>
+      <button v-on:click="$emit('toggle-filters')">Filter</button>
       <button v-on:click="nextSlide">Next</button>
     </div>
   </div>
@@ -24,7 +24,6 @@ export default {
   name: 'slideshow',
   data () {
     return {
-      background: null,
       quote: null,
       index: 0
     }
@@ -56,7 +55,7 @@ export default {
     selectQuote: function (index) {
       this.index = index
       this.quote = this.quotes[index]
-      this.background = this.getBackgroundFromIndex(index)
+      this.$emit('background-changed', this.getBackgroundFromIndex(index))
     },
     getBackgroundFromIndex: function (index) {
       return this.backgrounds[index % this.backgrounds.length] || defaultBackground
@@ -95,17 +94,6 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-
-    .background {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background-color: #3e506d;
-      background-size: cover;
-      background-repeat: no-repeat;
-      background-position: center;
-      transition: background-image 1s ease-in-out;
-    }
 
     .quote {
       position: relative;
