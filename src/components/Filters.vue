@@ -1,9 +1,11 @@
 <template>
   <div class="filters">
-    <select v-model="selectedAuthor">
-      <option value="">All authors</option>
-      <option v-for="author in authors">{{ author }}</option>
-    </select>
+    <div>
+      <select v-model="selectedAuthor">
+        <option value="">All authors</option>
+        <option v-for="author in authors">{{ author }}</option>
+      </select>
+    </div>
   </div>
 </template>
 
@@ -33,12 +35,15 @@
 
 <style lang="scss">
   .filters {
-    /*width: 100%;*/
-    /*background-image: url('../assets/default-bg.jpg');*/
-    /*background-attachment: fixed;*/
-    /*background-size: cover;*/
-    /*background-repeat: no-repeat;*/
-    /*background-position: center;*/
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0,0,0,0.2);
   }
 
   table {
