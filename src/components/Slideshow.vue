@@ -7,8 +7,8 @@
     </div>
 
     <div class=navbar>
-      <button v-on:click="previousSlide" class="previous">Previous</button>
-      <button v-on:click="nextSlide" class="next">Next</button>
+      <button v-on:click="previousSlide">Previous</button>
+      <button v-on:click="nextSlide">Next</button>
     </div>
   </div>
 </template>
@@ -85,7 +85,7 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang="scss">
+<style lang="scss" scoped>
   $colorPrimary: white;
 
   .slideshow {

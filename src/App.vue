@@ -1,5 +1,10 @@
 <template>
-  <slideshow :quotes="displayedQuotes" :backgrounds="backgrounds"></slideshow>
+  <div class="app">
+    <!--loader-->
+    <slideshow :quotes="displayedQuotes" :backgrounds="backgrounds"></slideshow>
+    <!--filter-->
+
+  </div>
 </template>
 
 <script>
@@ -64,17 +69,19 @@
 </script>
 
 <style lang="scss">
-@import 'sass/normalize';
-@import 'sass/skeleton';
-@import 'sass/loader';
+  @import 'sass/normalize';
+  @import 'sass/skeleton';
+  @import 'sass/loader';
 
-* {
-  box-sizing: border-box;
-}
+  $colorPrimary: white;
 
-html, body {
-  height: 100%;
-  width: 100%;
-  background-color: #3e506d;
-}
+  * {
+    box-sizing: border-box;
+  }
+
+  html, body, .app {
+    height: 100%;
+    width: 100%;
+    background-color: #3e506d;
+  }
 </style>
