@@ -1,6 +1,7 @@
 <template>
-  <div v-if="quote" class="slideshow" v-bind:style="{backgroundImage: `url(${background})`}">
-    <div class="quote">
+  <div class="slideshow">
+    <div class="background" v-if="background" v-bind:style="{backgroundImage: `url(${background})`}"></div>
+    <div class="quote" v-if="quote">
       <h3 class="quote-text">{{quote.text}}</h3>
       <h3 class="quote-author">{{quote.author}}</h3>
     </div>
@@ -22,6 +23,7 @@ export default {
   name: 'slideshow',
   data () {
     return {
+      background: null,
       quote: null,
       index: 0
     }
@@ -89,31 +91,36 @@ export default {
   .slideshow {
     width: 100%;
     height: 100%;
-
     display: flex;
     justify-content: center;
     align-items: center;
 
-    background-color: #3e506d;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    transition: background-image 1s ease-in-out;
-  }
-
-  .quote {
-    max-width: 80%;
-    padding: 0 2em;
-    color: $colorPrimary;
-    text-shadow: 1px 2px 3px black;
-    font-family: Copperplate, "Copperplate Gothic Light", sans-serif;
-
-    &-text {
-      font-size: 4vw;
+    .background {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-color: #3e506d;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      transition: background-image 1s ease-in-out;
     }
-    &-author {
-      font-size: 3vw;
-      text-align: right;
+
+    .quote {
+      position: relative;
+      max-width: 80%;
+      padding: 0 2em;
+      color: $colorPrimary;
+      text-shadow: 1px 2px 3px black;
+      font-family: Copperplate, "Copperplate Gothic Light", sans-serif;
+
+      &-text {
+        font-size: 4vw;
+      }
+      &-author {
+        font-size: 3vw;
+        text-align: right;
+      }
     }
   }
 

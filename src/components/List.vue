@@ -23,7 +23,7 @@
     data () {
       return {}
     },
-    props: ['allQuotes', 'displayedQuotes'],
+    props: ['allQuotes'],
     methods: {},
     created () {
       console.log('created list component')
@@ -31,7 +31,6 @@
   }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
   .quote-list {
     width: 100%;
