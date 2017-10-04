@@ -18,7 +18,7 @@
 import ImagePreloader from 'image-preloader'
 
 let preloader = new ImagePreloader()
-let defaultBackground = './assets/default-bg.jpg'
+let defaultBackground = require('../assets/default-bg.jpg')
 
 export default {
   name: 'slideshow',
