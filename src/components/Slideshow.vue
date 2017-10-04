@@ -89,16 +89,10 @@ export default {
   $colorPrimary: white;
 
   .slideshow {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    max-width: 80%;
+    padding: 0 2em;
 
     .quote {
-      position: relative;
-      max-width: 80%;
-      padding: 0 2em;
       color: $colorPrimary;
       text-shadow: 1px 2px 3px black;
       font-family: Copperplate, "Copperplate Gothic Light", sans-serif;

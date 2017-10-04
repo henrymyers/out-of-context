@@ -1,7 +1,6 @@
 <template>
-  <div class="app">
+  <div class="app" v-bind:style="{backgroundImage: `url(${displayedBackground})`}">
     <!--loader-->
-    <div class="background" v-if="displayedBackground" v-bind:style="{backgroundImage: `url(${displayedBackground})`}"></div>
     <slideshow
       :quotes="displayedQuotes"
       :backgrounds="backgrounds"
@@ -19,12 +18,17 @@
   let getJSON = require('get-json')
   let _ = require('lodash')
 
-  function getRandomizedArray (arr) {
-    if (!arr.length) {
-      return []
+  function getRandomizedArray (array = []) {
+    function randomize (arr) {
+      if (!arr.length) {
+        return []
+      }
+      let randomIndex = Math.floor(Math.random() * arr.length)
+      return arr.splice(randomIndex, 1).concat(randomize(arr))
     }
-    let randomIndex = Math.floor(Math.random() * arr.length)
-    return arr.splice(randomIndex, 1).concat(getRandomizedArray(arr))
+
+    let arrayCopy = Array.from(array)
+    return randomize(arrayCopy)
   }
 
   export default {
@@ -55,25 +59,25 @@
 
       getJSON(backgroundsApi, (error, response) => {
         if (error) this.errors.push(error)
-
         let backgrounds = (response && response.feed && response.feed.entry) || []
         this.backgrounds = getRandomizedArray(_.map(backgrounds, 'gsx$imageurl.$t'))
+      })
 
-        getJSON(quotesApi, (error, response) => {
-          if (error) this.errors.push(error)
+      getJSON(quotesApi, (error, response) => {
+        if (error) this.errors.push(error)
 
-          let quotes = (response && response.feed && response.feed.entry) || []
-          this.allQuotes = _.map(quotes, (quote) => {
-            return {
-              text: quote.gsx$quote && quote.gsx$quote.$t,
-              author: quote.gsx$author && quote.gsx$author.$t,
-              context: quote.gsx$contextoptional && quote.gsx$contextoptional.$t,
-              timestamp: new Date(quote.gsx$timestamp && quote.gsx$timestamp.$t),
-              exclude: !!(quote.gsx$excludefromslideshow && quote.gsx$excludefromslideshow.$t)
-            }
-          })
-          this.setDisplayedQuotes(getRandomizedArray(this.allQuotes).slice(0, 20))
+        let quotes = (response && response.feed && response.feed.entry) || []
+        quotes = _.map(quotes, (quote) => {
+          return {
+            text: quote.gsx$quote && quote.gsx$quote.$t,
+            author: quote.gsx$author && quote.gsx$author.$t,
+            context: quote.gsx$contextoptional && quote.gsx$contextoptional.$t,
+            timestamp: new Date(quote.gsx$timestamp && quote.gsx$timestamp.$t),
+            exclude: !!(quote.gsx$excludefromslideshow && quote.gsx$excludefromslideshow.$t)
+          }
         })
+        this.allQuotes = quotes
+        this.setDisplayedQuotes(getRandomizedArray(this.allQuotes).slice(0, 20))
       })
     }
   }
@@ -94,6 +98,14 @@
     height: 100%;
     width: 100%;
     background-color: #3e506d;
+  }
+
+  .app {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   .background {
