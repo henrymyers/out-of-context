@@ -1,25 +1,26 @@
 <template>
-  <div class="app" v-bind:style="{backgroundImage: `url(${displayedBackground})`}">
+  <div class="app">
 
     <div v-if="loading" class="loader"></div>
 
-    <slideshow
-      :quotes="displayedQuotes"
-      :backgrounds="backgrounds"
-      v-show="!loading && !showFilters"
-      v-on:toggle-filters="showFilters = !showFilters"
-      v-on:background-changed="setDisplayedBackground"></slideshow>
+    <background :backgrounds="backgrounds" :quote-index="quoteIndex"></background>
 
-    <filters
-      v-show="showFilters"
-      :quotes="allQuotes"
+    <slideshow :quote="quote" v-show="!loading && !showFilters"></slideshow>
+
+    <navigation :quotes="displayedQuotes" :quote-index="quoteIndex"
+      v-on:index-changed="setQuoteIndex"
+      v-on:show-filters="showFilters = true"></navigation>
+
+    <filters :quotes="allQuotes" v-show="showFilters"
       v-on:hide-filters="showFilters = false"
       v-on:filter-changed="setDisplayedQuotes"></filters>
   </div>
 </template>
 
 <script>
+  import Background from './components/Background.vue'
   import Slideshow from './components/Slideshow.vue'
+  import Navigation from './components/Navigation.vue'
   import Filters from './components/Filters.vue'
   import getRandomizedArray from './utils/getRandomizedArray'
 
@@ -27,7 +28,7 @@
   let _ = require('lodash')
 
   export default {
-    components: {Slideshow, Filters},
+    components: {Background, Slideshow, Navigation, Filters},
     name: 'app',
     data () {
       return {
@@ -36,16 +37,22 @@
         errors: [],
         backgrounds: [],
         allQuotes: [],
-        displayedBackground: null,
-        displayedQuotes: []
+        displayedQuotes: [],
+        quoteIndex: null
+      }
+    },
+    computed: {
+      quote: function () {
+        return this.displayedQuotes[this.quoteIndex]
       }
     },
     methods: {
       setDisplayedQuotes: function (quotes) {
         this.displayedQuotes = quotes || this.allQuotes
+        this.quoteIndex = 0
       },
-      setDisplayedBackground: function (background) {
-        this.displayedBackground = background
+      setQuoteIndex: function (index) {
+        this.quoteIndex = index
       }
     },
     created () {
@@ -84,8 +91,6 @@
   @import 'sass/skeleton';
   @import 'sass/loader';
 
-  $colorPrimary: white;
-
   * {
     box-sizing: border-box;
   }
@@ -102,11 +107,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    transition: background-image 1s ease-in-out;
   }
 
   button {

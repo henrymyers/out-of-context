@@ -78,6 +78,7 @@
 
 <style lang="scss">
   .filters {
+    position: relative;
     background-color: rgba(255,255,255,0.9);
     padding: 2rem;
     border-radius: 1rem;
