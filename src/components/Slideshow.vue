@@ -1,7 +1,7 @@
 <template>
   <div class="quote" v-if="quote">
     <h3 class="quote-text">{{quote.text}}</h3>
-    <h3 class="quote-author">{{quote.author}}</h3>
+    <h3 class="quote-author">- {{quote.author}}</h3>
     <!--<h5 class="quote-context" v-if="quote.context" v-bind:title="quote.context">?</h5>-->
   </div>
 </template>

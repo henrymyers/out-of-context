@@ -44,5 +44,13 @@ export default {
     background-repeat: no-repeat;
     background-position: center;
     transition: background-image 1s ease-in-out;
+
+    &:before {
+      content: "";
+      display: block;
+      height: 100%;
+      width: 100%;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.6));
+    }
   }
 </style>

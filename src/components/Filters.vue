@@ -1,27 +1,25 @@
 <template>
-  <div class="filters">
+  <div class="filters footer">
 
-    <div class="inputs">
-      <span>
-        <span>Display quotes from</span>
-        <select v-model="selectedAuthor" title="Selected author">
-          <option value="">Everyone</option>
-          <option v-for="author in authors">{{ author }}</option>
-        </select>
-      </span>
+    <span class="form-control">
+      <label>Show quotes from</label>
+      <select v-model="selectedAuthor" title="Selected author">
+        <option value="">Everyone</option>
+        <option v-for="author in authors">{{ author }}</option>
+      </select>
+    </span>
 
-      <span>
-        <span>sorted by</span>
-        <select v-model="sortMethod" title="Sorting method">
-          <option value="" selected>Random</option>
-          <option value="newest">Newest First</option>
-          <option value="oldest">Oldest First</option>
-        </select>
-      </span>
-    </div>
+    <span class="form-control">
+      <label>Sorted by</label>
+      <select v-model="sortMethod" title="Sorting method">
+        <option value="" selected>Random</option>
+        <option value="newest">Newest First</option>
+        <option value="oldest">Oldest First</option>
+      </select>
+    </span>
 
     <div class="buttons">
-      <i>{{ previewMessage }}</i>
+      <label>{{ previewMessage }}</label>
       <button v-on:click="close">Cancel</button>
       <button v-on:click="applyFilter" class="button-primary">Apply Filter</button>
     </div>
@@ -77,14 +75,8 @@
 </script>
 
 <style lang="scss">
-  .filters {
-    position: relative;
-    background-color: rgba(255,255,255,0.9);
-    padding: 2rem;
-    border-radius: 1rem;
-
-    .buttons {
-      text-align: right;
-    }
+  .buttons {
+    text-align: right;
+    flex: 1 0 auto;
   }
 </style>

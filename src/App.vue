@@ -5,13 +5,18 @@
 
     <background :backgrounds="backgrounds" :quote-index="quoteIndex"></background>
 
-    <slideshow :quote="quote" v-show="!loading && !showFilters"></slideshow>
+    <slideshow :quote="quote"></slideshow>
 
-    <navigation :quotes="displayedQuotes" :quote-index="quoteIndex"
+    <navigation
+      :quotes="displayedQuotes"
+      :quote-index="quoteIndex"
+      v-show="!showFilters"
       v-on:index-changed="setQuoteIndex"
       v-on:show-filters="showFilters = true"></navigation>
 
-    <filters :quotes="allQuotes" v-show="showFilters"
+    <filters
+      :quotes="allQuotes"
+      v-show="showFilters"
       v-on:hide-filters="showFilters = false"
       v-on:filter-changed="setDisplayedQuotes"></filters>
   </div>
@@ -91,6 +96,8 @@
   @import 'sass/skeleton';
   @import 'sass/loader';
 
+  $colorPrimary: white;
+
   * {
     box-sizing: border-box;
   }
@@ -109,7 +116,37 @@
     align-items: center;
   }
 
+  select, label, button {
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+  }
+
+  label {
+    color: $colorPrimary;
+  }
+
   button {
-    margin-bottom: 0;
+    &, &:hover, &:disabled {
+      color: $colorPrimary;
+      border-color: $colorPrimary;
+    }
+    &:hover:not([disabled]) {
+      background-color: rgba($colorPrimary, 0.2);
+    }
+    &:disabled {
+      opacity: 0.5;
+    }
+
+  }
+
+  .footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 0.5rem 1rem;
   }
 </style>
