@@ -20,6 +20,7 @@
     },
     methods: {
       addQuote: function () {
+        this.cancelAutoplay()
         window.open('https://docs.google.com/forms/d/e/1FAIpQLSfzQeE5bJd4F2zOxfXnhvBbglnqo8zQcegPvDa_E1lx-VkCFw/viewform?c=0&w=1', '_blank')
       },
       startAutoplay: function () {

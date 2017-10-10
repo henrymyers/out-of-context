@@ -37,7 +37,7 @@
     data () {
       return {
         selectedAuthor: '',
-        sortMethod: ''
+        sortMethod: 'newest'
       }
     },
     computed: {
