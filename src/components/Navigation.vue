@@ -4,6 +4,7 @@
     <button v-on:click="showFilters">Filter</button>
     <button v-on:click="cancelAutoplay" v-if="autoplay">Pause</button>
     <button v-on:click="startAutoplay" v-if="!autoplay" :disabled="quotes.length < 2">Play</button>
+    <button class="new-quote" v-on:click="addQuote">Add Quote</button>
     <button v-on:click="next" :disabled="quotes.length < 2">&#x2192;</button>
   </div>
 </template>
@@ -18,6 +19,9 @@
       }
     },
     methods: {
+      addQuote: function () {
+        window.open('https://docs.google.com/forms/d/e/1FAIpQLSfzQeE5bJd4F2zOxfXnhvBbglnqo8zQcegPvDa_E1lx-VkCFw/viewform?c=0&w=1', '_blank')
+      },
       startAutoplay: function () {
         if (!this.autoplay) {
           this.autoplay = setInterval(this.next, 7000, false)
