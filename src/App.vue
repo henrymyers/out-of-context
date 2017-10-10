@@ -83,7 +83,7 @@
             exclude: !!(quote.gsx$excludefromslideshow && quote.gsx$excludefromslideshow.$t)
           }
         })
-        this.allQuotes = _.reverse(_.sortBy(quotes, 'timestamp'))
+        this.allQuotes = getRandomizedArray(quotes)
         this.setDisplayedQuotes(this.allQuotes)
         this.loading = false
       })
