@@ -28,8 +28,8 @@
   import Navigation from './components/Navigation.vue'
   import Filters from './components/Filters.vue'
   import getRandomizedArray from './utils/getRandomizedArray'
+  import { getGoogleJsonSheet } from './utils/getGoogleJsonSheet'
 
-  let getJSON = require('get-json')
   let _ = require('lodash')
 
   export default {
@@ -61,32 +61,46 @@
       }
     },
     created () {
-      let quotesApi = 'https://spreadsheets.google.com/feeds/list/1-wxLMgOX_jNayPD7u_w07gkuLnVZ1TJxvg9Je9yQj98/1/public/values?alt=json'
-      let backgroundsApi = 'https://spreadsheets.google.com/feeds/list/1IlMhfGYrm9qWMeLEZ5hGnicD3ugaoJTM3u_zfNJEybI/1/public/values?alt=json'
+      const quotesSheetId = '1-wxLMgOX_jNayPD7u_w07gkuLnVZ1TJxvg9Je9yQj98'
+      const backgroundSheetId = '1IlMhfGYrm9qWMeLEZ5hGnicD3ugaoJTM3u_zfNJEybI'
 
-      getJSON(backgroundsApi, (error, response) => {
-        if (error) this.errors.push(error)
-        let backgrounds = (response && response.feed && response.feed.entry) || []
-        this.backgrounds = getRandomizedArray(_.map(backgrounds, 'gsx$imageurl.$t'))
-      })
+      const feedBackgrounds = () => {
+        getGoogleJsonSheet(backgroundSheetId)
+          .then(sheet => {
+            const backgroundsTemp = (sheet && sheet.table && sheet.table.rows) || []
+            this.backgrounds = getRandomizedArray(_.map(backgroundsTemp, cell => cell && cell.c[0] && cell.c[0].v))
+          })
+          .catch(error => {
+            if (error) this.errors.push(error)
+          })
+      }
 
-      getJSON(quotesApi, (error, response) => {
-        if (error) this.errors.push(error)
+      const feedQuotes = () => {
+        getGoogleJsonSheet(quotesSheetId)
+          .then(sheet => {
+            let quotes = (sheet && sheet.table && sheet.table.rows) || []
+            quotes = _.map(quotes, (quote) => {
+              // It would be better to dynamically find the idexes from the table cols...
+              return {
+                timestamp: quote && quote.c[0] && quote.c[0].v && new Date(quote.c[0].f),
+                author: quote && quote.c[1] && quote.c[1].v,
+                text: quote && quote.c[2] && quote.c[2].v,
+                context: quote && quote.c[3] && quote.c[3].v,
+                exclude: !!(quote && quote.c[5] && quote.c[5].v)
+              }
+            })
 
-        let quotes = (response && response.feed && response.feed.entry) || []
-        quotes = _.map(quotes, (quote) => {
-          return {
-            text: quote.gsx$quote && quote.gsx$quote.$t,
-            author: quote.gsx$author && quote.gsx$author.$t,
-            context: quote.gsx$contextoptional && quote.gsx$contextoptional.$t,
-            timestamp: new Date(quote.gsx$timestamp && quote.gsx$timestamp.$t),
-            exclude: !!(quote.gsx$excludefromslideshow && quote.gsx$excludefromslideshow.$t)
-          }
-        })
-        this.allQuotes = getRandomizedArray(quotes)
-        this.setDisplayedQuotes(this.allQuotes)
-        this.loading = false
-      })
+            this.allQuotes = getRandomizedArray(quotes)
+            this.setDisplayedQuotes(this.allQuotes)
+            this.loading = false
+          })
+          .catch(error => {
+            if (error) this.errors.push(error)
+          })
+      }
+
+      feedBackgrounds()
+      feedQuotes()
     }
   }
 </script>
