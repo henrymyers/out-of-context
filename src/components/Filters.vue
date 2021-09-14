@@ -4,7 +4,7 @@
     <span class="form-control">
       <label>Show quotes from</label>
       <select v-model="selectedAuthor" title="Selected author">
-        <option value="">Everyone</option>
+        <option value="">Everybody</option>
         <option v-for="author in authors">{{ author }}</option>
       </select>
     </span>
