@@ -1,5 +1,4 @@
-# quotr
-
+# out-of-context
 > A Vue.js project
 
 ## Build Setup

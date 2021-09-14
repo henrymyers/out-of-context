@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Quotes taken out of context",
   "author": "Henry Myers <quotr@henrymyers.com>",
-  "homepage": "https://github.com/henrymyers/out-of-context",
+  "homepage": "git@github.com:henrymyers/out-of-context",
   "private": true,
   "scripts": {
     "dev": "node build/dev-server.js",
